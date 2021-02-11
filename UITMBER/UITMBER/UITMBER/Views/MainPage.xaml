@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:UITMBER.ViewModels"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             x:Class="UITMBER.Views.MainPage">
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+    
+    
+    <ContentPage.Content>
+        <Grid>
+            <ContentView 
+                Content="{Binding MapControl}"/>
+            
+  
+            <Button Margin="0,10,0,0" Text="LOC"
+                     
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    HorizontalOptions="Start"
+                    VerticalOptions="End"      
+                        Command="{Binding ActionCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

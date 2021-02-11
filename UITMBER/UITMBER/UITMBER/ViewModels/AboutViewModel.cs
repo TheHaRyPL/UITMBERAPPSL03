@@ -5,6 +5,8 @@ using UITMBER.Services;
 using UITMBER.Services.Authentication;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using UITMBER.Models.Car;
+using UITMBER.Services.Car;
 
 namespace UITMBER.ViewModels
 {
@@ -12,6 +14,7 @@ namespace UITMBER.ViewModels
     {
 
         public IAuthenticationService AuthService => DependencyService.Get<IAuthenticationService>();
+        public ICarService CarService => DependencyService.Get<ICarService>();
 
         public AboutViewModel()
         {

@@ -49,6 +49,17 @@ namespace UITMBER.Services.Request
         }
 
 
+    
+        public async Task<TResult> DeleteAsync<TResult>(string uri)
+        {
+            HttpClient httpClient = CreateHttpClient();
+            var response = await httpClient.DeleteAsync(uri);
+
+            await CheckResponse(response);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<TResult>(responseContent);
+        }
 
         public Task<TResult> PostAsync<TResult>(string uri, TResult data)
         {
@@ -72,13 +83,26 @@ namespace UITMBER.Services.Request
 
         public Task<TResult> PutAsync<TResult>(string uri, TResult data)
         {
-            throw new NotImplementedException();
+            return PutAsync<TResult, TResult>(uri, data);
         }
 
-        public Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data)
+        public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data)
         {
-            throw new NotImplementedException();
+            HttpClient client = CreateHttpClient();
+
+            var serializedData = JsonConvert.SerializeObject(data);
+
+            var response = await client.PutAsync(uri, new StringContent(serializedData, Encoding.UTF8, "application/json"));
+
+            await CheckResponse(response);
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<TResult>(content);
         }
+
+
+
 
         // This method must be in a class in a platform project, even if
         // the HttpClient object is constructed in a shared project.
@@ -92,5 +116,7 @@ namespace UITMBER.Services.Request
             };
             return handler;
         }
+
+   
     }
 }
