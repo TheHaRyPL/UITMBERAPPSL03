@@ -25,11 +25,13 @@ namespace UITMBER.ViewModels
         {
 
 
-            var mapSpan = Xamarin.Forms.Maps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(50.043604d, 22.0261172d), Xamarin.Forms.Maps.Distance.FromKilometers(3));
+            var mapSpan = Xamarin.Forms.GoogleMaps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.GoogleMaps.Position(50.043604d, 22.0261172d), Xamarin.Forms.GoogleMaps.Distance.FromKilometers(3));
 
 
             MapControl = new Xamarin.Forms.GoogleMaps.Map();
-          
+
+            MapControl.MoveToRegion(mapSpan);
+
             MapControl.MyLocationEnabled = true;
 
             AddMapStyle();

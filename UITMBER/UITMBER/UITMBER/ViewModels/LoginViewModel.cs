@@ -29,19 +29,49 @@ namespace UITMBER.ViewModels
 
         public LoginViewModel()
         {
+            Email = "jjonca1@jjonca.pl";
+            Password = "Sm1shn3";
+
+
+
             LoginCommand = new Command(OnLoginClicked);
             RegisterCommand = new Command(OnRegisterClicked);
         }
 
         private async void OnLoginClicked(object obj)
         {
-            await authenticationService.Authenticate(new Models.Authentication.AuthenticationRequest
-            {
-                Login = email,
-                Password = password});
+            if (IsBusy)
+                return;
 
-            // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
-            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+            IsBusy = true;
+
+
+            try
+            {
+                var result = await authenticationService.AuthenticateAsync(new Models.Authentication.AuthenticationRequest
+                {
+                    Login = email,
+                    Password = password
+                }
+                );
+
+            
+                    // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
+                    await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+              
+            }
+            catch (Exception ex)
+            {
+                //Error handling
+
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+          
+
+      
         }
 
         private async void OnRegisterClicked(object obj)
