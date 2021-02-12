@@ -28,11 +28,9 @@
                 </Grid.RowDefinitions>
 
                 <Image Grid.Row="0"
-                   HeightRequest="150"
-                   WidthRequest="150"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   Source="ic_user"></Image>
+                   Source="uitm_logo"></Image>
 
                 <Label 
                 Grid.Row="1"
