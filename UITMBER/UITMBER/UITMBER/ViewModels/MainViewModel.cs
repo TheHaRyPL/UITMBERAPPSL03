@@ -4,72 +4,96 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 using Xamarin.Essentials;
+using System.Reflection;
+using UITMBER.Services.Drivers;
+using UITMBER.Services.Location;
+using UITMBER.Services.Authentication;
 
 namespace UITMBER.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+
+        public IDriversService DriversService => DependencyService.Get<IDriversService>();
+        public ILocationService LocationService => DependencyService.Get<ILocationService>();
+
+        public IAuthenticationService AuthService => DependencyService.Get<IAuthenticationService>();
+
         public MainViewModel()
         {
 
 
-            var mapSpan = Xamarin.Forms.Maps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(50.043604d, 22.0261172d), Xamarin.Forms.Maps.Distance.FromKilometers(3));
+            var mapSpan = Xamarin.Forms.GoogleMaps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.GoogleMaps.Position(50.043604d, 22.0261172d), Xamarin.Forms.GoogleMaps.Distance.FromKilometers(3));
 
 
-            MapControl = new Xamarin.Forms.Maps.Map(mapSpan);
-            MapControl.MapClicked += MapControl_MapClicked;
-            MapControl.IsShowingUser = true;
+            MapControl = new Xamarin.Forms.GoogleMaps.Map();
 
+            MapControl.MoveToRegion(mapSpan);
+
+            MapControl.MyLocationEnabled = true;
+
+            AddMapStyle();
         }
 
-        private void MapControl_MapClicked(object sender, Xamarin.Forms.Maps.MapClickedEventArgs e)
+
+        private void AddMapStyle()
         {
-            MapControl.Pins.Clear();
-            MapControl.Pins.Add(new Xamarin.Forms.Maps.Pin()
+            var assembly = typeof(App).GetTypeInfo().Assembly;
+            var stream = assembly.GetManifestResourceStream($"UITMBER.MapStyle.json");
+            string styleFile;
+            using (var reader = new System.IO.StreamReader(stream))
             {
-                Position = e.Position,
-                Label = "Clicked",
-                Type = Xamarin.Forms.Maps.PinType.SavedPin
-            });
+                styleFile = reader.ReadToEnd();
+            }
 
-             
+            MapControl.MapStyle = MapStyle.FromJson(styleFile);
         }
 
+    
         private string infoText;
         public string InfoText
         {
             get => infoText;
             set => SetProperty(ref infoText, value);
         }
-        public ICommand ActionCommand => new Command(async () => await GetMyCurrentLocation());
+        public ICommand GetCurrentLocationCommand => new Command(async () => await GetMyCurrentLocation());
 
 
-        private Xamarin.Forms.Maps.Map mapControl;
-        public Xamarin.Forms.Maps.Map MapControl
+        private Xamarin.Forms.GoogleMaps.Map mapControl;
+        public Xamarin.Forms.GoogleMaps.Map MapControl
         {
             get => mapControl;
             set => SetProperty(ref mapControl, value);
         }
 
-
         private async Task GetMyCurrentLocation()
         {
             try
             {
-                //var location = await Geolocation.GetLastKnownLocationAsync();
+
+                //var result = await AuthService.AuthenticateAsync(new Models.Authentication.AuthenticationRequest()
+                //{
+                //    Login = "test2@test.pl",
+                //    Password = "Sm1shn3"
+                //});
 
 
-                var location = await Geolocation.GetLocationAsync( new GeolocationRequest() { DesiredAccuracy = GeolocationAccuracy.Default });
+
+                var location = await Geolocation.GetLastKnownLocationAsync();
 
                 if (location != null)
                 {
                     InfoText = $"LAT: {location.Latitude} LONG: {location.Longitude}";
 
 
-                    var mapSpan = Xamarin.Forms.Maps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.Maps.Position(location.Latitude, location.Longitude), Xamarin.Forms.Maps.Distance.FromKilometers(1.5));
+                    var mapSpan = Xamarin.Forms.GoogleMaps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.GoogleMaps.Position(location.Latitude, location.Longitude), Xamarin.Forms.GoogleMaps.Distance.FromKilometers(1.5));
 
                     MapControl.MoveToRegion(mapSpan);
+
+
+                   await  LoadNearDrivers(location);
                 }
 
             }
@@ -90,6 +114,46 @@ namespace UITMBER.ViewModels
 
 
             }
+
+
+        }
+
+        private async Task LoadNearDrivers(Location location)
+        {
+
+            MapControl.Polylines.Clear();
+            MapControl.Pins.Clear();
+
+            //SERVER
+            var drivers = await DriversService.GetNerbyDriveres(new Models.LatLong() { Lat = location.Latitude, Long = location.Longitude });
+
+            foreach (var driver in drivers)
+            {
+                MapControl.Pins.Add(new Xamarin.Forms.GoogleMaps.Pin
+                {
+                    Type = PinType.Place,
+                    Position = new Position(driver.Lat, driver.Long),
+                    Label = "Driver",
+                    Icon = (Device.RuntimePlatform == Device.Android) ? BitmapDescriptorFactory.FromBundle("ic_car.png") : BitmapDescriptorFactory.FromView(new Image() { Source = "ic_car.png", WidthRequest = 25, HeightRequest = 25 }),
+                    Tag = string.Empty
+                });
+            }
+
+
+            ////MOCKDATA
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var random = new Random();
+
+            //    MapControl.Pins.Add(new Xamarin.Forms.GoogleMaps.Pin
+            //    {
+            //        Type = PinType.Place,
+            //        Position = new Position(location.Latitude + (random.NextDouble() * 0.04), location.Longitude + (random.NextDouble() * 0.04)),
+            //        Label = "Driver",
+            //        Icon = (Device.RuntimePlatform == Device.Android) ? BitmapDescriptorFactory.FromBundle("ic_car.png") : BitmapDescriptorFactory.FromView(new Image() { Source = "ic_car.png", WidthRequest = 25, HeightRequest = 25 }),
+            //        Tag = string.Empty
+            //    });
+            //}
 
 
         }

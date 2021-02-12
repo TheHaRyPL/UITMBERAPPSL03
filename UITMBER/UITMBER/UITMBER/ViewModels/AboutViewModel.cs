@@ -7,6 +7,9 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using UITMBER.Models.Car;
 using UITMBER.Services.Car;
+using UITMBER.Services.Register;
+using UITMBER.Services.Location;
+
 
 namespace UITMBER.ViewModels
 {
@@ -15,6 +18,8 @@ namespace UITMBER.ViewModels
 
         public IAuthenticationService AuthService => DependencyService.Get<IAuthenticationService>();
         public ICarService CarService => DependencyService.Get<ICarService>();
+        public IRegisterService _regService => DependencyService.Get<IRegisterService>();
+        public ILocationService _locatService => DependencyService.Get<ILocationService>();
 
         public AboutViewModel()
         {

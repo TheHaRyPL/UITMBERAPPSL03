@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:UITMBER.ViewModels"
+             xmlns:model="clr-namespace:UITMBER.Models.Application"
+             Title="{Binding Title}"
+             mc:Ignorable="d"
+             x:Class="UITMBER.Views.MyApplicationPage">
+    <RefreshView x:DataType="local:MyApplicationViewModel" Command="{Binding LoadApplicationsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ApplicationsListView"
+                ItemsSource="{Binding MyApplicationsResponse}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" x:DataType="model:GetMyApplicationsResponse">
+                        <StackLayout Orientation="Horizontal">
+                            <Label >ID:</Label>
+                            <Label Text="{Binding Id}"
+                                LineBreakMode="NoWrap" 
+                                FontSize="16" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label>Status:</Label>
+                            <Label Text="{Binding Accepted}" 
+                            LineBreakMode="NoWrap"
+                            FontSize="13" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label>Date:</Label>
+                            <Label Text="{Binding Date}" 
+                            LineBreakMode="NoWrap"
+                            FontSize="13" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label>DriverLicenceNo:</Label>
+                            <Label Text="{Binding DriverLicenceNo}" 
+                            LineBreakMode="NoWrap"
+                            FontSize="13" />
+                        </StackLayout>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

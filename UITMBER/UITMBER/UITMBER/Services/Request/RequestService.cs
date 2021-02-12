@@ -19,7 +19,7 @@ namespace UITMBER.Services.Request
 
             if (!string.IsNullOrEmpty(Settings.AccessToken))
             {
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer" + Settings.AccessToken);
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Settings.AccessToken);
             }
 
             return httpClient;

@@ -6,7 +6,7 @@ using UITMBER.Models.Application;
 
 namespace UITMBER.Services.Application
 {
-    interface IApplicationService
+    public interface IApplicationService
     {
         Task<bool> SendApplicationAsync(SendApplicationRequest input);
         Task<List<GetMyApplicationsResponse>> GetMyApplicationsAsync();

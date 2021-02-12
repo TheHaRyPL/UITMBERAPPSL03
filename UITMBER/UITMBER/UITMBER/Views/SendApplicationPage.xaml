@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UITMBER.Views.SendApplicationPage"
+             xmlns:vm="clr-namespace:UITMBER.ViewModels"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:SendApplicationViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label 
+                Text="Driver Licence Number"
+                Margin="55,0"
+                TextColor="Black"
+                FontSize="Subtitle"></Label>
+                <Frame Margin="20,0,20,0" BorderColor="Black">
+                    <Entry 
+                    Text="{Binding DriverLicenceNo}" 
+                    Placeholder="Insert Drivers Licence Number"
+                    TextColor="Black"
+                    PlaceholderColor="Black"
+                    HeightRequest="39"
+                    FontSize="Body"></Entry>
+                </Frame>
+                <Label 
+                Text="Car Plate"
+                Margin="55,0"
+                TextColor="Black"
+                FontSize="Subtitle"></Label>
+                <Frame Margin="20,0,20,0" BorderColor="Black">
+                    <Entry 
+                    Text="{Binding CarPlate}" 
+                    Placeholder="Insert Car Plate"
+                    TextColor="Black"
+                    PlaceholderColor="Black"
+                    HeightRequest="39"
+                    FontSize="Body"></Entry>
+                </Frame>
+                <Label 
+                Text="Driver Licence Photo"
+                Margin="55,0"
+                TextColor="Black"
+                FontSize="Subtitle"></Label>
+                <Frame Margin="20,0,20,0" BorderColor="Black">
+                    <Entry 
+                    Text="{Binding DriverLicencePhoto}" 
+                    Placeholder="Insert the link to the photo of the driving license "
+                    TextColor="Black"
+                    PlaceholderColor="Black"
+                    HeightRequest="39"
+                    FontSize="Body"></Entry>
+                </Frame>
+
+                <Button 
+                    Text="Send" 
+                    Command="{Binding SendNewApplicationCommand}"
+                    TextColor="Black" 
+                    FontSize="Subtitle">
+                </Button>
+
+                <Button 
+                    Text="Cancel"
+                    Clicked="Cancel_Clicked"
+                    TextColor="Black" 
+                    FontSize="Subtitle">
+                </Button>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
