@@ -40,6 +40,8 @@ namespace UITMBER
             {
                 await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
             }
+
+
         }
 
         protected override void OnSleep()
