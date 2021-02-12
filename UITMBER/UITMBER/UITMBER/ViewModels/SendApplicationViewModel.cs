@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
+using Xamarin.Essentials;
 
 namespace UITMBER.ViewModels
 {
@@ -34,21 +36,74 @@ namespace UITMBER.ViewModels
         }
         public Command SendNewApplicationCommand { get; }
 
+
+        public ICommand TakePicture => new Command(async () => await TakePictureAsync());
+
+        private async Task TakePictureAsync()
+        {
+            try
+            {
+                if (!MediaPicker.IsCaptureSupported)
+                {
+                    //Nie mozna zrobic zdjecia
+                    return;
+                }
+
+
+                var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions()
+                {
+                    Title = "MyDriverLicense"
+                });
+
+
+                if (photo == null)
+                    return;
+
+                var base64 = string.Empty;
+
+                using (var stream = await photo.OpenReadAsync())
+                {
+                    byte[] photoData = new byte[stream.Length];
+
+                    stream.Read(photoData, 0, Convert.ToInt32(stream.Length));
+
+
+                    base64 = Convert.ToBase64String(photoData);
+
+                    // DriverLicencePhoto = base64;
+                }
+
+
+
+                ImageSource = Xamarin.Forms.ImageSource.FromStream(
+           () => new MemoryStream(Convert.FromBase64String(base64)));
+
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
         /// <summary>
         /// Pobieram liste samochodów tego użytkownika
         /// </summary>
         public async void getCarList()
         {
+
+
             try
             {
                 CarList.Clear();
-                var cars =  await _carService.GetMyCars();
-                foreach(var car in cars)
+                var cars = await _carService.GetMyCars();
+                foreach (var car in cars)
                 {
                     CarList.Add(car);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
@@ -56,7 +111,7 @@ namespace UITMBER.ViewModels
 
         public async void send()
         {
-            if (string.IsNullOrEmpty(driverLicenceNo) || string.IsNullOrEmpty(imageSource) || string.IsNullOrEmpty(carPlate)) 
+            if (string.IsNullOrEmpty(driverLicenceNo) || string.IsNullOrEmpty(imageSource) || string.IsNullOrEmpty(carPlate))
             {
                 await Application.Current.MainPage.DisplayAlert("Błąd", "The required fields have not been completed", "OK");
             }
@@ -95,7 +150,7 @@ namespace UITMBER.ViewModels
                 }
 
             }
-            
+
         }
 
         public string driverLicenceNo = "";
@@ -130,7 +185,7 @@ namespace UITMBER.ViewModels
 
         public string CarPlate
         {
-            get 
+            get
             {
                 return carPlate;
             }
@@ -140,5 +195,20 @@ namespace UITMBER.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ImageSource _imageSource = "";
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return _imageSource;
+            }
+            set
+            {
+                _imageSource = value;
+                OnPropertyChanged();
+            }
+        }
+
     }
 }
