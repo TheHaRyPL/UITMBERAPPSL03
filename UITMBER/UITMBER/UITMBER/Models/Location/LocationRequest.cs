@@ -7,7 +7,6 @@ namespace UITMBER.Models.Location
     public class LocationRequest
     {
 
-        public long id { get; set; }
 
         public double lat { get; set; }
 

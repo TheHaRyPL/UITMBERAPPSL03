@@ -12,7 +12,6 @@ using UITMBER.Services.Location;
 
 using UITMBER.Services.UserFavouriteLocation;
 
-using UITMBER.Services.Car;
 
 
 using UITMBER.Services.Application;
@@ -20,6 +19,7 @@ using UITMBER.Services.Application;
 
 using UITMBER.Services.Orders;
 using UITMBER.Services.Clients;
+using UITMBER.Services.Drivers;
 
 namespace UITMBER
 {
@@ -34,8 +34,12 @@ namespace UITMBER
             MainPage = new AppShell();
         }
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
+            if(Settings.TokenExpire < DateTime.Now)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            }
         }
 
         protected override void OnSleep()
@@ -65,8 +69,9 @@ namespace UITMBER
             DependencyService.Register<IClinetsService, ClientsService>();
 
 
+            DependencyService.Register<IDriversService, DriversService>();
 
-
+            
 
 
 

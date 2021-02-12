@@ -82,7 +82,7 @@ namespace UITMBER.ViewModels
                     return;
 
                 // This will push the OrderDetailPage onto the navigation stack
-                //await Shell.Current.GoToAsync($"{nameof(OrderDetailPage)}?{nameof(OrderDetailViewModel.OrderId)}={order.Id}");
+                await Shell.Current.GoToAsync($"{nameof(OrderDetailPage)}?{nameof(OrderDetailViewModel.OrderId)}={order.Id}");
             }
         }
 }

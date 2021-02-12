@@ -2,13 +2,91 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vm="clr-namespace:UITMBER.ViewModels"
              mc:Ignorable="d"
              x:Class="UITMBER.Views.LoginPage"
+        
              Shell.NavBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
-        </StackLayout>
+        <Grid>
+
+
+            <Grid Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Source="uitm_logo"></Image>
+
+                <Label 
+                Grid.Row="1"
+                Text="Login"
+                HorizontalOptions="Center"
+             ></Label>
+                <Entry
+                       Grid.Row="2"
+                Text="{Binding Email}"
+             ></Entry>
+                <Label 
+                       Grid.Row="3"
+                Text="Hasło"
+                Margin="0,0,0,0"
+                HorizontalOptions="Center"
+             ></Label>
+                <Entry
+                       Grid.Row="4"
+                Text="{Binding Password}"
+                IsPassword="True"
+             ></Entry>
+                <Button
+                       Grid.Row="5"
+                HeightRequest="70"
+                VerticalOptions="Center"
+                Text="Zaloguj"
+                Command="{Binding LoginCommand}"
+             ></Button>
+                <Button
+                Grid.Row="6"
+                Text="Zarejestruj"
+                HeightRequest="70"
+                BackgroundColor="White"
+                TextColor="{StaticResource Primary}"
+                BorderColor="{d:StaticResource PrimaryDark}"
+                BorderWidth="1"
+                VerticalOptions="Center"
+                Command="{Binding RegisterCommand}"
+             ></Button>
+
+            </Grid>
+
+            <Grid IsVisible="{Binding IsBusy}"  BackgroundColor="#44000000" >
+                <ActivityIndicator 
+                    IsVisible="{Binding IsBusy}" 
+                    IsRunning="{Binding IsBusy}" 
+                
+                    Color="{StaticResource Accent}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                ></ActivityIndicator>
+            </Grid>
+
+        
+
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
