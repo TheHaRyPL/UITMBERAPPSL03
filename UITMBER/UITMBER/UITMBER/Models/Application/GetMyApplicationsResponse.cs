@@ -4,7 +4,7 @@ using System.Text;
 
 namespace UITMBER.Models.Application
 {
-    class GetMyApplicationsResponse
+    public class GetMyApplicationsResponse
     {
         public long Id { get; set; }
         public long UserId { get; set; }

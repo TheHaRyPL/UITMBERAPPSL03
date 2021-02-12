@@ -4,7 +4,7 @@ using System.Text;
 
 namespace UITMBER.Models.Application
 {
-    class SendApplicationRequest
+    public class SendApplicationRequest
     {
         public long UserId { get; set; }
         public DateTime Date { get; set; }

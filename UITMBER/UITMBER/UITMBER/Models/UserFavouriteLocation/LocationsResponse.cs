@@ -12,5 +12,16 @@ namespace UITMBER.Models.UserFavouriteLocation
         public double Long { get; set; }
         public string Name { get; set; }
 
+        public LocationRequest ToLocationRequest()
+        {
+            return new LocationRequest
+            {
+                UserId = this.UserId,
+                Name = this.Name,
+                Lat = this.Lat,
+                Long = this.Long
+            };
+        }
+
     }
 }

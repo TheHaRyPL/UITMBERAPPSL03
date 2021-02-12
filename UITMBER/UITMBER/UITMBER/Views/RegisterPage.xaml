@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:UITMBER.ViewModels"
+             x:Class="UITMBER.Views.RegisterPage"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <vm:RegisterViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView BackgroundColor="{StaticResource Primary}">
+            <StackLayout>
+                <StackLayout>
+                    <Image Source="logo.png"
+                    HeightRequest="130"
+                   Aspect="AspectFit" 
+                   VerticalOptions="Start" />
+                    <Label Text="Zarejestruj się" HorizontalOptions="Center" FontSize="Title" TextColor="White"/>
+                </StackLayout >
+                <StackLayout>
+
+                    <Entry Placeholder="Zdjęcie"
+                         PlaceholderColor="White"
+                         Margin="20,5,20,0" 
+                         Text="{Binding Photo}" 
+                         TextColor="White"/>
+
+                    <Entry Placeholder="Imię"
+                          PlaceholderColor="White"
+                          Margin="20,5,20,0" 
+                          Text="{Binding FirstName}" 
+                          TextColor="White"/>
+
+                    <Entry Placeholder="Nazwsisko"
+                          PlaceholderColor="White"
+                          Margin="20,5,20,0" 
+                          Text="{Binding LastName}" 
+                          TextColor="White"/>
+
+                    <Entry Placeholder="Email"
+                          PlaceholderColor="White"
+                          Margin="20,5,20,0" 
+                          Text="{Binding Email}"
+                          TextColor="White"/>
+
+                    <Entry Placeholder="Numer telefonu"
+                          PlaceholderColor="White"
+                          Margin="20,5,20,0"
+                          Text="{Binding PhoneNumber}"
+                          TextColor="White"/>
+
+                    <Entry Placeholder="Hasło"
+                          PlaceholderColor="White"
+                          Margin="20,5,20,0"
+                          IsPassword="True"
+                          Text="{Binding Password}"
+                          TextColor="White"/>
+                </StackLayout>
+                <StackLayout>
+                    <Button Text="Zarejestruj się"
+                     BorderRadius ="26"
+                     Margin="20,10,20,0" 
+                     TextColor="{StaticResource Primary}"
+                     Command="{Binding RegisterCommand}"
+                     BackgroundColor="White" />
+
+                    <Label Text="Posiadasz już konto?"
+                   Margin="20,20,20,0"
+                   HorizontalTextAlignment="Center"
+                   TextColor="White"/>
+
+                    <Button Text="Zaloguj się"
+                    Command="{Binding LoginPageCommand}"
+                    Margin="20,0,20,0" 
+                    BorderRadius ="26"
+                    BackgroundColor="White"
+                    TextColor="{StaticResource Primary}"
+
+                    />
+                </StackLayout>
+
+            </StackLayout>
+
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage> 

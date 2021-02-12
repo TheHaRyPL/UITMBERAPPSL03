@@ -13,7 +13,7 @@ namespace UITMBER
     {
         public const string SERVERENDPOINT = "https://dev.wsiz.edu.pl";
 
-
+        public const string GoogleMapsApiKey = "";
         private static ISettings AppSettings
         {
             get
@@ -94,6 +94,7 @@ namespace UITMBER
                 AppSettings.AddOrUpdateValue(TokenExpireKey, value);
             }
         }
-        
+
+
     }
 }
