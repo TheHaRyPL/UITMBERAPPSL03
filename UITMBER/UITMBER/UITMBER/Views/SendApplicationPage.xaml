@@ -44,15 +44,18 @@
                 Margin="55,0"
                 TextColor="Black"
                 FontSize="Subtitle"></Label>
-                <Frame Margin="20,0,20,0" BorderColor="Black">
-                    <Entry 
-                    Text="{Binding DriverLicencePhoto}" 
-                    Placeholder="Insert the link to the photo of the driving license "
-                    TextColor="Black"
-                    PlaceholderColor="Black"
-                    HeightRequest="39"
-                    FontSize="Body"></Entry>
-                </Frame>
+      
+                 
+
+                <Image Source="{Binding ImageSource}"/>
+
+                <Button 
+                    Text="TakePicture" 
+                    Command="{Binding TakePicture}"
+                    TextColor="Black" 
+                    FontSize="Subtitle">
+                    </Button>
+
 
                 <Button 
                     Text="Send" 
