@@ -2,86 +2,108 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:UITMBER.ViewModels"
-             x:Class="UITMBER.Views.RegisterPage"
+             x:Class="UITMBER.Views.RegisterPage" 
+             BackgroundColor="LightGray"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Text}" />
+        </Style>
 
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="WidthRequest" Value="20" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="CornerRadius" Value="25" />
+
+
+            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
+            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+            <Setter Property="BorderWidth" Value="1"/>
+
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.BindingContext>
         <vm:RegisterViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ScrollView BackgroundColor="{StaticResource Primary}">
-            <StackLayout>
+        <ScrollView>
+            <Grid>
                 <StackLayout>
-                    <Image Source="logo.png"
+                    <StackLayout>
+                        <Image Source="logo.png"
                     HeightRequest="130"
                    Aspect="AspectFit" 
                    VerticalOptions="Start" />
-                    <Label Text="Zarejestruj się" HorizontalOptions="Center" FontSize="Title" TextColor="White"/>
-                </StackLayout >
-                <StackLayout>
+                   
+                    </StackLayout >
+                <Frame CornerRadius="25"  Margin="0,20,0,0">
+                    <StackLayout>
 
-                    <Entry Placeholder="Zdjęcie"
-                         PlaceholderColor="White"
+                        <Entry Placeholder="Zdjęcie"
                          Margin="20,5,20,0" 
-                         Text="{Binding Photo}" 
-                         TextColor="White"/>
+                         Text="{Binding Photo}" />
 
-                    <Entry Placeholder="Imię"
-                          PlaceholderColor="White"
+                        <Entry Placeholder="Imię"
                           Margin="20,5,20,0" 
-                          Text="{Binding FirstName}" 
-                          TextColor="White"/>
+                          Text="{Binding FirstName}"/>
 
-                    <Entry Placeholder="Nazwsisko"
-                          PlaceholderColor="White"
+                        <Entry Placeholder="Nazwisko"
                           Margin="20,5,20,0" 
-                          Text="{Binding LastName}" 
-                          TextColor="White"/>
+                          Text="{Binding LastName}" />
 
-                    <Entry Placeholder="Email"
-                          PlaceholderColor="White"
+                        <Entry Placeholder="Email"
                           Margin="20,5,20,0" 
-                          Text="{Binding Email}"
-                          TextColor="White"/>
+                          Text="{Binding Email}"/>
 
-                    <Entry Placeholder="Numer telefonu"
-                          PlaceholderColor="White"
+                        <Entry Placeholder="Numer telefonu"
                           Margin="20,5,20,0"
-                          Text="{Binding PhoneNumber}"
-                          TextColor="White"/>
+                          Text="{Binding PhoneNumber}"/>
 
-                    <Entry Placeholder="Hasło"
-                          PlaceholderColor="White"
+                        <Entry Placeholder="Hasło"
                           Margin="20,5,20,0"
                           IsPassword="True"
-                          Text="{Binding Password}"
-                          TextColor="White"/>
-                </StackLayout>
-                <StackLayout>
+                          Text="{Binding Password}"/>
+                  
                     <Button Text="Zarejestruj się"
                      BorderRadius ="26"
-                     Margin="20,10,20,0" 
-                     TextColor="{StaticResource Primary}"
+                     Margin="0,10,0,0" 
+                     Style="{StaticResource ButtonStyle}"
+                     TextColor="White" 
                      Command="{Binding RegisterCommand}"
-                     BackgroundColor="White" />
+                     />
 
-                    <Label Text="Posiadasz już konto?"
-                   Margin="20,20,20,0"
+            <Label Text="Posiadasz już konto?"
+                   Margin="20,10,20,0"
                    HorizontalTextAlignment="Center"
-                   TextColor="White"/>
+                   Style="{StaticResource LabelStyle}"/>
 
-                    <Button Text="Zaloguj się"
-                    Command="{Binding LoginPageCommand}"
-                    Margin="20,0,20,0" 
+            <Button Text="Zaloguj się"
+                    Command="{Binding LoginPageCommand}" 
                     BorderRadius ="26"
                     BackgroundColor="White"
-                    TextColor="{StaticResource Primary}"
-
+                    Style="{StaticResource ButtonStyle}"
+                   
+                    
                     />
-                </StackLayout>
+                    </StackLayout>
+
+                </Frame>
 
             </StackLayout>
+              
+            <Grid IsVisible="{Binding IsBusy}" BackgroundColor="#55000000" >
+                <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               Color="{StaticResource Accent}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               ></ActivityIndicator>
 
+            </Grid>
+            </Grid>
         </ScrollView>
+        
     </ContentPage.Content>
-</ContentPage> 
+</ContentPage>
