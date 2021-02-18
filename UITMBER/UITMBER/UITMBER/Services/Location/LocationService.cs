@@ -14,7 +14,7 @@ namespace UITMBER.Services.Location
 
         public async Task<LocationRequest> SaveMyLocation(LocationRequest input)
         {
-            var uri = $"{Settings.SERVER_ENDPOINT}/Location/SaveMyLocation?id={input.id}&lat={input.lat}&longitude={input.longitude}";
+            var uri = $"{Settings.SERVERENDPOINT}/Location/SaveMyLocation";
             var result = await _requestService.PostAsync<LocationRequest>(uri, input);
             return result;
         }

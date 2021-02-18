@@ -17,7 +17,7 @@ namespace UITMBER.Services.Register
 
         public async Task<bool> Register(RegisterRequest input)
         {
-            var uri = $"{Settings.SERVER_ENDPOINT}/Authentication/Register";
+            var uri = $"{Settings.SERVERENDPOINT}/Authentication/Register";
 
             await _requestService.PostAsync<RegisterRequest>(uri, input);
 
