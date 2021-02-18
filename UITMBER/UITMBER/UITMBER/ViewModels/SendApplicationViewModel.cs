@@ -21,21 +21,23 @@ namespace UITMBER.ViewModels
     {
         public IApplicationService _applicationService = DependencyService.Get<IApplicationService>();
         public ICarService _carService = DependencyService.Get<ICarService>();
-        public ObservableCollection<CarDto> CarList { get; }
+        public ObservableCollection<CarDto> CarList { get; set; }
         public SendApplicationRequest application { get; set; }
 
 
         public SendApplicationViewModel()
         {
             Title = "Send New Application";
-            getCarList();
 
+            application = new SendApplicationRequest();
             CarList = new ObservableCollection<CarDto>();
 
-            SendNewApplicationCommand = new Command(send);
+            SendNewApplicationCommand = new Command(Send);
+            CancelCommand = new Command(Cancel);
         }
         public Command SendNewApplicationCommand { get; }
 
+        public Command CancelCommand { get; }
 
         public ICommand TakePicture => new Command(async () => await TakePictureAsync());
 
@@ -70,7 +72,7 @@ namespace UITMBER.ViewModels
 
                     base64 = Convert.ToBase64String(photoData);
 
-                    // DriverLicencePhoto = base64;
+                    DriverLicencePhoto = base64;
                 }
 
 
@@ -87,10 +89,24 @@ namespace UITMBER.ViewModels
             }
         }
 
+        public void Cleaning()
+        {
+            ImageSource = null;
+            DriverLicenceNo = "";
+            DriverLicencePhoto = "";
+            CarPlate = "";
+        }
+
+        public async void Cancel()
+        {
+            Cleaning();
+            await Shell.Current.GoToAsync($"//{nameof(Views.MainPage)}");
+        }
+
         /// <summary>
         /// Pobieram liste samochodów tego użytkownika
         /// </summary>
-        public async void getCarList()
+        public async Task GetCarList()
         {
 
 
@@ -98,10 +114,19 @@ namespace UITMBER.ViewModels
             {
                 CarList.Clear();
                 var cars = await _carService.GetMyCars();
+
+                //Mock Data
+                //var cars = new List<CarDto>()
+                //{
+                //    new CarDto {Id=1, UserId=1, Model="Fiat", PlateNo="RZ123" },
+                //    new CarDto {Id=2, UserId=1, Model="Audi", PlateNo="RLA123" }
+                //};
+
                 foreach (var car in cars)
                 {
                     CarList.Add(car);
                 }
+                return;
             }
             catch (Exception ex)
             {
@@ -109,9 +134,9 @@ namespace UITMBER.ViewModels
             }
         }
 
-        public async void send()
+        public async void Send()
         {
-            if (string.IsNullOrEmpty(driverLicenceNo) || string.IsNullOrEmpty(imageSource) || string.IsNullOrEmpty(carPlate))
+            if (string.IsNullOrEmpty(DriverLicenceNo) || string.IsNullOrEmpty(DriverLicencePhoto) || string.IsNullOrEmpty(CarPlate))
             {
                 await Application.Current.MainPage.DisplayAlert("Błąd", "The required fields have not been completed", "OK");
             }
@@ -119,30 +144,23 @@ namespace UITMBER.ViewModels
             {
                 //Sprawdzam czy podany przez użytkownika numer rejestracyjny pojazdu istnieje
                 //w liście z pobranymi samochodami użytkownika i wybieram numer id tego samochodu
+                await GetCarList();
                 var x = CarList.FirstOrDefault(z => z.PlateNo == carPlate);
+
                 if (x != null)
                 {
                     application.CarId = x.Id;
-
-                    //Wybieram ID zalogowanego użytkownika z wyszukanego po numerze rejstracyjnym(który wprowadził użytkownik) samochodu
-                    //Zakładam ze numer rejstracyjny a zarazem samochód jest przypisany do tego użytkownika i będzie to dobre Id użytkownika
-                    //jest to słabe i wadliwe rozwazanie ale nie mam skąd pobrac Id zalogowanego uzytkownika
-                    //w AuthenticationService zapisujemy w Settings imie, nazwisko, zdjęcie, oraz token dostępu zalogowanego użytkownika.
-                    //Może warto pomyśleć nad tym aby pobierać z API również Id użytkownika który sie zalogował i również zapisać to w Settings
                     application.UserId = x.UserId;
 
-                    application.DriverLicenceNo = driverLicenceNo;
+                    application.DriverLicenceNo = DriverLicenceNo;
                     application.Date = DateTime.Now;
-                    application.DriverLicencePhoto = imageSource;
+                    application.DriverLicencePhoto = DriverLicencePhoto;
 
                     await _applicationService.SendApplicationAsync(application);
                     await Application.Current.MainPage.DisplayAlert("Save", "The application has been sent", "OK");
                     await Task.Delay(400);
-
-                    //Docelowo strona do wysyłania aplikacji będzie dostępna ze strony w której są wyświetlane wszystkie aplikacje wiec
-                    //po klikniecie Send i poprawnym wysłaniu, użytkownik zostanie przeniesiony z powrotem do strony ze wszystkimi jego aplikacjami;
-                    //Aktualnie po kliknięciu w przycisk wyrzuca błąd
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    await Shell.Current.GoToAsync($"//{nameof(Views.MainPage)}");
+                    Cleaning();
                 }
                 else
                 {
