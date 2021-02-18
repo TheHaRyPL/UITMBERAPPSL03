@@ -7,70 +7,63 @@
     <ContentPage.BindingContext>
         <vm:SendApplicationViewModel/>
     </ContentPage.BindingContext>
-
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Command="{Binding CancelCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Label 
-                Text="Driver Licence Number"
-                Margin="55,0"
-                TextColor="Black"
-                FontSize="Subtitle"></Label>
-                <Frame Margin="20,0,20,0" BorderColor="Black">
+                <Grid Padding="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <Label 
+                        Text="Driver Licence Number"
+                        Grid.Row="0"
+                        HorizontalOptions="Center"></Label>
                     <Entry 
-                    Text="{Binding DriverLicenceNo}" 
-                    Placeholder="Insert Drivers Licence Number"
-                    TextColor="Black"
-                    PlaceholderColor="Black"
-                    HeightRequest="39"
-                    FontSize="Body"></Entry>
-                </Frame>
-                <Label 
-                Text="Car Plate"
-                Margin="55,0"
-                TextColor="Black"
-                FontSize="Subtitle"></Label>
-                <Frame Margin="20,0,20,0" BorderColor="Black">
+                        Text="{Binding DriverLicenceNo}" 
+                        Placeholder="Insert Drivers Licence Number"
+                        Grid.Row="1"
+                        HeightRequest="50"
+                        FontSize="Body"></Entry>
+                    <Label 
+                        Text="Car Plate"
+                        Grid.Row="2"
+                        HorizontalOptions="Center"></Label>
                     <Entry 
-                    Text="{Binding CarPlate}" 
-                    Placeholder="Insert Car Plate"
-                    TextColor="Black"
-                    PlaceholderColor="Black"
-                    HeightRequest="39"
-                    FontSize="Body"></Entry>
-                </Frame>
-                <Label 
-                Text="Driver Licence Photo"
-                Margin="55,0"
-                TextColor="Black"
-                FontSize="Subtitle"></Label>
-      
-                 
-
-                <Image Source="{Binding ImageSource}"/>
-
-                <Button 
-                    Text="TakePicture" 
-                    Command="{Binding TakePicture}"
-                    TextColor="Black" 
-                    FontSize="Subtitle">
+                        Text="{Binding CarPlate}" 
+                        Placeholder="Insert Car Plate"
+                        HeightRequest="50"
+                        Grid.Row="3"></Entry>
+                    <Label 
+                        Text="Driver Licence Photo"
+                        Grid.Row="4"
+                        HorizontalOptions="Center"></Label>
+                    <Image Source="{Binding ImageSource}"
+                           Grid.Row="5"
+                           Margin="20,10,20,10"/>
+                    <Button 
+                        Text="TakePicture" 
+                        Command="{Binding TakePicture}"
+                        Grid.Row="6"
+                        VerticalOptions="Center">
+                    </Button>
+                    <Button 
+                        Text="Send" 
+                        Command="{Binding SendNewApplicationCommand}"
+                        Grid.Row="7"
+                        VerticalOptions="Center">
                     </Button>
 
-
-                <Button 
-                    Text="Send" 
-                    Command="{Binding SendNewApplicationCommand}"
-                    TextColor="Black" 
-                    FontSize="Subtitle">
-                </Button>
-
-                <Button 
-                    Text="Cancel"
-                    Clicked="Cancel_Clicked"
-                    TextColor="Black" 
-                    FontSize="Subtitle">
-                </Button>
-
+                </Grid>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
