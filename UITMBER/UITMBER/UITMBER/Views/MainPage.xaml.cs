@@ -32,5 +32,24 @@ namespace UITMBER.Views
 
             base.OnAppearing();
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+
+        }
+
+        private void originEntry_Focused(object sender, FocusEventArgs e)
+        {
+            (BindingContext as MainViewModel).OrderStateEnum = Enums.OrderStateEnum.StartPicker;
+        }
+
+        private void destinationEntry_Focused(object sender, FocusEventArgs e)
+        {
+            (BindingContext as MainViewModel).OrderStateEnum = Enums.OrderStateEnum.DestinationPicker;
+        }
+
+  
+
+       
     }
 }
