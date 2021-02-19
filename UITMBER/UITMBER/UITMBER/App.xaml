@@ -4,6 +4,7 @@
              xmlns:converters="clr-namespace:UITMBER.Converters"
              x:Class="UITMBER.App"
 >
+
     <!--
         Define global resources and styles here, that apply to all pages in your app.
     -->
@@ -14,6 +15,8 @@
             <Color x:Key="ColorText">#232323</Color>
             <Color x:Key="ColorTextDescription">#212121</Color>
             <Color x:Key="Accent">#ffbf00</Color>
+
+            <local:OrderStatusColorConverter x:Key="statusColor" />
 
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"></Setter>
