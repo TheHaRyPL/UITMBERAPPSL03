@@ -61,7 +61,15 @@ namespace UITMBER.ViewModels
 
         private async void OnRegisterClicked(object obj)
         {
-            await registerService.Register(new RegisterRequest
+            if (IsBusy)
+                return;
+
+
+            IsBusy = true;
+
+            try
+            {
+                await registerService.Register(new RegisterRequest
             {
                 Email = email,
                 FirstName = firsname,
@@ -71,6 +79,16 @@ namespace UITMBER.ViewModels
                 Photo = photo
             });
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            }
+            catch (Exception ex)
+            {
+
+                //Error handlig
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
         private async void OnLoginClicked(object obj)
         {
