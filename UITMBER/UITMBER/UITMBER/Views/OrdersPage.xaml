@@ -7,40 +7,46 @@
              xmlns:model="clr-namespace:UITMBER.Models.Orders">
 
     <RefreshView x:DataType="local:OrdersViewModel" Command="{Binding LoadOrdersCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <ScrollView>
         <CollectionView x:Name="OrdersListView"
                 ItemsSource="{Binding Orders}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Order">
-                        <StackLayout Orientation="Horizontal">
-                            <Label >Typ samochodu:</Label>
-                            <Label Text="{Binding Type}" 
+                        <StackLayout>
+                            <Frame Padding="10">
+                                <StackLayout Padding="10" x:DataType="model:Order" BackgroundColor="{ Binding Status, Converter={StaticResource statusColor}}" >
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label TextColor="White">Typ samochodu:</Label>
+                                        <Label TextColor="White" FontAttributes="Bold"  Text="{Binding Type}" 
                                 LineBreakMode="NoWrap" 
-                                FontSize="16" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                        <Label>Status: </Label>
-                        <Label Text="{Binding Status}" 
+                                FontSize="18" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                        <Label TextColor="White">Status:</Label>
+                                        <Label TextColor="White" FontAttributes="Bold"  Text="{Binding Status}" 
                             LineBreakMode="NoWrap"
-                            FontSize="13" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label>Koszt:</Label>
-                            <Label Text="{Binding Cost}" 
+                            FontSize="16" ></Label>
+                                    </StackLayout>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                        <Label TextColor="White">Koszt:</Label>
+                                        <Label Text="{Binding Cost, StringFormat='{0:F0} zł'}" TextColor="White" FontAttributes="Bold" 
                             LineBreakMode="NoWrap"
-                            FontSize="13" />
-                        </StackLayout>
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
+                            FontSize="18" />
+                            </StackLayout>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:OrdersViewModel}}, Path=OrderTapped}"		
                                 CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
-                </DataTemplate>
+                                </TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </Frame>
+                        </StackLayout>
+                    </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+            </ScrollView>
     </RefreshView>
 </ContentPage>

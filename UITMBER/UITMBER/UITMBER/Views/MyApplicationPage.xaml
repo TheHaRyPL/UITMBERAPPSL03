@@ -7,39 +7,55 @@
              xmlns:model="clr-namespace:UITMBER.Models.Application"
              Title="{Binding Title}"
              mc:Ignorable="d"
-             x:Class="UITMBER.Views.MyApplicationPage">
+             x:Class="UITMBER.Views.MyApplicationPage"
+             BackgroundColor="Gainsboro">
     <RefreshView x:DataType="local:MyApplicationViewModel" Command="{Binding LoadApplicationsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ApplicationsListView"
                 ItemsSource="{Binding MyApplicationsResponse}"
                 SelectionMode="None">
+            <d:CollectionView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                <x:String>First User</x:String>
+                <x:String>Second User</x:String>
+                <x:String>Third User</x:String>
+                <x:String>Fifth User</x:String>
+                </x:Array>
+                </d:CollectionView.ItemsSource>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:GetMyApplicationsResponse">
+                    <ScrollView>
+                    <StackLayout Padding="5" x:DataType="model:GetMyApplicationsResponse">
+                        <Frame CornerRadius="10" BorderColor="DarkRed">
+                            <StackLayout HorizontalOptions="Center">
                         <StackLayout Orientation="Horizontal">
-                            <Label >ID:</Label>
+                            <Label FontAttributes="Bold" FontSize="Subtitle">ID:</Label>
                             <Label Text="{Binding Id}"
                                 LineBreakMode="NoWrap" 
-                                FontSize="16" />
-                        </StackLayout>
+                                FontSize="Subtitle" />
+                        </StackLayout>                        
                         <StackLayout Orientation="Horizontal">
-                            <Label>Status:</Label>
-                            <Label Text="{Binding Accepted}" 
-                            LineBreakMode="NoWrap"
-                            FontSize="13" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label>Date:</Label>
+                            <Label FontAttributes="Bold" FontSize="Subtitle">Date:</Label>
                             <Label Text="{Binding Date}" 
                             LineBreakMode="NoWrap"
-                            FontSize="13" />
+                            FontSize="Subtitle" />
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Label>DriverLicenceNo:</Label>
+                            <Label FontAttributes="Bold" FontSize="Subtitle">DriverLicenceNo:</Label>
                             <Label Text="{Binding DriverLicenceNo}" 
                             LineBreakMode="NoWrap"
-                            FontSize="13" />
+                            FontSize="Subtitle" />
                         </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label FontAttributes="Bold" FontSize="Large">Status:</Label>
+                            <Label Text="{Binding Accepted}" 
+                            LineBreakMode="NoWrap"
+                            FontSize="Large"
+                            TextColor="{Binding Accepted,  Converter={StaticResource StatusColorConverter}}" />
+                        </StackLayout>
+                            </StackLayout>
+                        </Frame>                            
                     </StackLayout>
+                    </ScrollView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="UITMBER.App">
+             xmlns:converters="clr-namespace:UITMBER.Converters"
+             x:Class="UITMBER.App"
+>
+
     <!--
         Define global resources and styles here, that apply to all pages in your app.
     -->
@@ -12,6 +15,8 @@
             <Color x:Key="ColorText">#232323</Color>
             <Color x:Key="ColorTextDescription">#212121</Color>
             <Color x:Key="Accent">#ffbf00</Color>
+
+            <local:OrderStatusColorConverter x:Key="statusColor" />
 
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"></Setter>
@@ -60,7 +65,12 @@
                 <Setter Property="TextColor" Value="{StaticResource ColorTextDescription}"/>
 
             </Style>
-            
+
+            <converters:StatusColorConverter
+                x:Key="StatusColorConverter"/>
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

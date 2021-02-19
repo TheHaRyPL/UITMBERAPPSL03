@@ -2,8 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:UITMBER.ViewModels"
-             xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
-             
+ 
+                 xmlns:model="clr-namespace:UITMBER"
+             xmlns:enumVal="clr-namespace:UITMBER.Enums"
+             xmlns:converters="clr-namespace:UITMBER.Converters"
              Shell.NavBarIsVisible="False"
              x:Class="UITMBER.Views.MainPage">
     <ContentPage.BindingContext>
@@ -13,19 +15,262 @@
     
     <ContentPage.Content>
         <Grid>
-            <ContentView 
-                Content="{Binding MapControl}"/>
-            
-  
-            <Button Margin="0,10,0,0"
-                    Text="LOC"
-                     
-                    HeightRequest="50"
-                    WidthRequest="50"
-                    HorizontalOptions="Start"
-                    VerticalOptions="End"      
-                        Command="{Binding GetCurrentLocationCommand}"
-                        />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0"
+              Grid.RowSpan="2"
+              ColumnSpacing="0"
+              RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ContentView 
+                        Grid.Row="0"
+                        Content="{Binding MapControl}"/>
+         
+
+                <Grid 
+                    HeightRequest="250"
+                    Grid.Row="1"
+                                    IsVisible="false"
+                 
+                 
+                     VerticalOptions="End"
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="White"
+                     RowSpacing="5"
+                     ColumnSpacing="15"
+                     Padding="0,20">
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid"
+                                 Binding="{Binding PageStatusEnum}"
+                                 Value="Default">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                 
+
+                    <Label Text="{Binding Source={x:Static model:Settings.Name}, StringFormat='Witojcie, {0}'}"
+                         FontAttributes="Bold"
+                         FontSize="17"
+                         Margin="0,0,0,15"
+                         HorizontalOptions="CenterAndExpand"
+                         Grid.Row="0"/>
+
+                    <BoxView HorizontalOptions="FillAndExpand"
+                           Color="Gray"
+                           HeightRequest="1"
+                           Grid.Row="1"/>
+
+                    <StackLayout BackgroundColor="LightGray"
+                               HorizontalOptions="FillAndExpand"
+                               Margin="20,15,20,0"
+                               Padding="20"
+                               Grid.Row="2"> 
+                        <Label Text="Gdzie jedziemy?"
+                               FontSize="18"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ChangePageStatusCommand}"
+                                  CommandParameter="{x:Static enumVal:PageStatusEnum.Searching}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                    <BoxView HorizontalOptions="FillAndExpand"
+                          Margin="0,10"
+                           Color="Gray"
+                           HeightRequest="1"
+                           Grid.Row="5"/>
+                    <CollectionView 
+                        IsVisible="{Binding HasUFL}"
+                        ItemsSource="{Binding URLItems}"
+                        Grid.Row="6">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal">
+                                    
+                      
+                                <Image Source="ic_recentlocation"
+                                        VerticalOptions="Center"
+                                        Margin="20,0,0,0"
+                                        HeightRequest="35"
+                                        WidthRequest="35">       
+                                </Image>
+
+                                    <Label Text="{Binding Name}"
+                                       FontAttributes="Bold"
+                                         FontSize="17">     
+                                </Label>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GetPlaceDetailCommand}"
+                                  CommandParameter="{Binding RecentPlace2}"/>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </DataTemplate>    
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Label 
+                        HorizontalOptions="CenterAndExpand"
+                         Grid.Row="6"
+                        Text="Brak ulubionych miejsc"
+                           IsVisible="{Binding HasUFL, Converter={converters:InverseBooleanConverter}}"
+                           FontSize="18"/>
+
+                </Grid>
+
+            </Grid>
+
+            <Image Source="ic_back"
+               VerticalOptions="Start"
+               HorizontalOptions="Start"
+               IsVisible="false"
+               x:Name="backButton"
+               Margin="20,20,20,0"
+              HeightRequest="30"
+              WidthRequest="30"
+              Grid.Row="0"
+              Grid.RowSpan="2">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                             Binding="{Binding PageStatusEnum}"
+                             Value="ShowingRoute">
+                        <Setter Property="IsVisible" Value="True"/>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangePageStatusCommand}"
+                                          CommandParameter="{x:Static enumVal:PageStatusEnum.Default}"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Grid 
+                IsVisible="false"
+                 x:Name="headerSearch"
+                                Grid.Row="0"
+                 Padding="15,20"
+                 ColumnSpacing="10"
+                 RowSpacing="10"
+                 BackgroundColor="White"
+                 VerticalOptions="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
+                             Binding="{Binding PageStatusEnum}"
+                             Value="Searching">
+                        <Setter Property="IsVisible" Value="True"/>
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Image Source="ic_back"
+                      Margin="0,0,0,0"
+                      x:Name="ic_Back"
+                      HeightRequest="30"
+                      WidthRequest="30"
+                      Grid.Row="0"
+                      Grid.Column="0">  
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangePageStatusCommand}"
+                                            CommandParameter="{x:Static enumVal:PageStatusEnum.Default}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <StackLayout Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"
+                    Padding="0,10"
+                    Spacing="0"
+                    HorizontalOptions="Center">
+                    <BoxView HeightRequest="5"
+                       WidthRequest="5"
+                       CornerRadius="2.5"
+                       Color="Gray"
+                       x:Name="originView">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView"
+                                     Binding="{Binding Source={x:Reference originEntry},
+                                                       Path=IsFocused}"
+                                     Value="True">
+                                <Setter Property="Color" Value="Black" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                    <BoxView WidthRequest="0.5"
+                       HorizontalOptions="Center"
+                       VerticalOptions="FillAndExpand"
+                       Color="Gray"/>
+                    <BoxView HeightRequest="5"
+                       WidthRequest="5"
+                       Color="Gray"
+                       x:Name="destionationView">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView"
+                                     Binding="{Binding Source={x:Reference destinationEntry},
+                                                       Path=IsFocused}"
+                                     Value="True">
+                                <Setter Property="Color" Value="Black" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                 
+                </StackLayout>
+
+                <Entry Placeholder="Enter Pickup"
+               Grid.Row="1" 
+               Grid.Column="1"
+               Text="{Binding StartText}"
+                       Focused="originEntry_Focused"
+               x:Name="originEntry"
+               ReturnType="Search"
+               HorizontalOptions="FillAndExpand" />
+                
+                
+                <Entry Placeholder="Where to?"
+     
+               Grid.Row="2"
+               Grid.Column="1"
+               Text="{Binding DestinationText}"
+               x:Name="destinationEntry"
+                   
+                       Focused="destinationEntry_Focused"
+               ReturnType="Search"
+               HorizontalOptions="FillAndExpand" />
+
+                <Button    Grid.Row="2"  Grid.Column="2" HeightRequest="30" WidthRequest="30" Text="GO" IsEnabled="{Binding CanCalculate}" Command="{Binding StartCalculatingCommand}" ></Button>
+
+            </Grid>
+
+
+            <Grid Grid.RowSpan="2" IsVisible="{Binding IsBusy}"  BackgroundColor="#44000000" >
+                <ActivityIndicator 
+                    IsVisible="{Binding IsBusy}" 
+                    IsRunning="{Binding IsBusy}" 
+                
+                    Color="{StaticResource Accent}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                ></ActivityIndicator>
+            </Grid>
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>
