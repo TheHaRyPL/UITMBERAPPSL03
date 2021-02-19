@@ -67,14 +67,27 @@ namespace UITMBER.ViewModels
                 if (PageStatusEnum == PageStatusEnum.Searching)
                 {
 
-
-                    var mapSpan = Xamarin.Forms.GoogleMaps.MapSpan.FromCenterAndRadius(new Xamarin.Forms.GoogleMaps.Position(e.Point.Latitude, e.Point.Longitude), Xamarin.Forms.GoogleMaps.Distance.FromKilometers(1));
+                    var mapSpan = Xamarin.Forms.GoogleMaps.MapSpan.FromCenterAndRadius(
+                        new Xamarin.Forms.GoogleMaps.Position(e.Point.Latitude, e.Point.Longitude),
+                        Xamarin.Forms.GoogleMaps.Distance.FromKilometers(1));
 
                     MapControl.MoveToRegion(mapSpan);
 
                     //Location Geocoding
                     var locations = await Geocoding.GetPlacemarksAsync(new Location(e.Point.Latitude, e.Point.Longitude));
                     var locationDecoded = locations?.FirstOrDefault();
+
+
+                    //Pobieranie lokalizacji z adresu (tekstu)
+                    //var loactionsFromAddress = await Geocoding.GetLocationsAsync("Paderewskiego");
+                    //var loactionFromAddress = loactionsFromAddress?.FirstOrDefault();
+                    //var mapSpan = Xamarin.Forms.GoogleMaps.MapSpan.FromCenterAndRadius(
+                    //   new Xamarin.Forms.GoogleMaps.Position(loactionFromAddress.Latitude, loactionFromAddress.Longitude),
+                    //   Xamarin.Forms.GoogleMaps.Distance.FromKilometers(1));
+
+                    //MapControl.MoveToRegion(mapSpan);
+
+                    //return;
 
                     //Setting Pin
                     if (OrderStateEnum == OrderStateEnum.StartPicker)
@@ -230,11 +243,14 @@ namespace UITMBER.ViewModels
 
             if (PageStatusEnum == PageStatusEnum.Default)
             {
-
+                MapControl.Pins.Clear();
+                MapControl.Polylines.Clear();
+                GetMyCurrentLocation();
             }
             else if (PageStatusEnum == PageStatusEnum.Searching)
             {
                 MapControl.Pins.Clear();
+                MapControl.Polylines.Clear();
                 if (_startLocation != null)
                 {
                     MapControl.Pins.Add(new Xamarin.Forms.GoogleMaps.Pin
@@ -269,6 +285,12 @@ namespace UITMBER.ViewModels
                 //UFL
 
                 var uflItems = await UserFavouriteLocationService.GetMyLocationsAsync();
+
+                foreach (var item in uflItems)
+                {
+                    URLItems.Add(item);
+                }
+         
 
                 HasUFL = uflItems.Count > 0;
 
