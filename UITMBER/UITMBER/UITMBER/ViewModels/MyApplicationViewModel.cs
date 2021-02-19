@@ -36,7 +36,10 @@ namespace UITMBER.ViewModels
 
                 var applications = new List<GetMyApplicationsResponse>() {
                     new GetMyApplicationsResponse { Id = 1, Date = DateTime.Now, Accepted=true, DriverLicenceNo="4124141"},
-                    new GetMyApplicationsResponse { Id = 2, Date = DateTime.Now, Accepted=false, DriverLicenceNo="4242424"}
+                    new GetMyApplicationsResponse { Id = 2, Date = DateTime.Now, Accepted=false, DriverLicenceNo="4242424"},
+                    new GetMyApplicationsResponse { Id = 3, Date = DateTime.Now, Accepted=true, DriverLicenceNo="4124141"},
+                    new GetMyApplicationsResponse { Id = 4, Date = DateTime.Now, Accepted=false, DriverLicenceNo="4242424"}
+
                 };
 
                 foreach (var x in applications) 

@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="UITMBER.App">
+             xmlns:converters="clr-namespace:UITMBER.Converters"
+             x:Class="UITMBER.App"
+>
     <!--
         Define global resources and styles here, that apply to all pages in your app.
     -->
@@ -60,7 +62,12 @@
                 <Setter Property="TextColor" Value="{StaticResource ColorTextDescription}"/>
 
             </Style>
-            
+
+            <converters:StatusColorConverter
+                x:Key="StatusColorConverter"/>
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
